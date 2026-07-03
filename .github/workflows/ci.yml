@@ -53,7 +53,7 @@ jobs:
       # 4. Upgrade build tools (FIX POSITION)
       - name: Upgrade build tools
         run: |
-          python -m pip install --upgrade pip wheel setuptools cython
+          python -m pip install --upgrade pip wheel setuptools "Cython<3"
 
       # 5. Install base Python packages
       - name: Install base Python packages
