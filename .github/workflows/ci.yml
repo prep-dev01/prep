@@ -83,12 +83,12 @@ jobs:
           db_name = False
           logfile = None" > odoo.conf
 
-      # 10. Run Odoo Tests
-      - name: Run Odoo Tests
+      # 10. Run custom module install/tests only
+      - name: Run credit_limit_control checks
         run: |
-          cd odoo
-          python odoo-bin -c ../odoo.conf \
+          python odoo/odoo-bin -c odoo.conf \
             -d test_db \
             -i credit_limit_control \
             --stop-after-init \
-            --test-enable
+            --test-enable \
+            --test-tags /credit_limit_control
