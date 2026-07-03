@@ -2,9 +2,9 @@ name: Odoo CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [develop, staging, main]
   pull_request:
-    branches: [main]
+    branches: [develop, staging, main]
 
 jobs:
   test:
@@ -89,7 +89,7 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
 
     steps:
       - name: Checkout Repository
@@ -103,6 +103,16 @@ jobs:
             credit_limit_control/ \
             /home/pranjal/odoo/odoo-19-modules/credit_limit_control/
 
+      - name: Upgrade module in CI/CD test database
+        run: |
+          cd /home/pranjal/odoo/odoo-19
+          ./venv/bin/python odoo-bin -c config/odoo.conf \
+            -d ci_cd_test \
+            -i credit_limit_control \
+            -u credit_limit_control \
+            --stop-after-init \
+            --without-demo=all
+
       - name: Restart Odoo service
         run: |
-          sudo systemctl restart odoo19
+          sudo /usr/bin/systemctl restart odoo19
