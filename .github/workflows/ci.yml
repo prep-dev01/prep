@@ -85,3 +85,50 @@ jobs:
             --stop-after-init \
             --test-enable \
             --test-tags /credit_limit_control
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    env:
+      ODOO_HOST: ${{ secrets.ODOO_HOST }}
+      ODOO_USER: ${{ secrets.ODOO_USER }}
+      ODOO_PORT: ${{ secrets.ODOO_PORT || '22' }}
+      ODOO_SSH_KEY: ${{ secrets.ODOO_SSH_KEY }}
+      ODOO_ADDONS_PATH: ${{ secrets.ODOO_ADDONS_PATH }}
+      ODOO_SERVICE: ${{ secrets.ODOO_SERVICE }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Validate deployment secrets
+        run: |
+          : "${ODOO_HOST:?Missing GitHub Secret ODOO_HOST}"
+          : "${ODOO_USER:?Missing GitHub Secret ODOO_USER}"
+          : "${ODOO_SSH_KEY:?Missing GitHub Secret ODOO_SSH_KEY}"
+          : "${ODOO_ADDONS_PATH:?Missing GitHub Secret ODOO_ADDONS_PATH}"
+          : "${ODOO_SERVICE:?Missing GitHub Secret ODOO_SERVICE}"
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$ODOO_SSH_KEY" > ~/.ssh/odoo_deploy_key
+          chmod 600 ~/.ssh/odoo_deploy_key
+          ssh-keyscan -p "$ODOO_PORT" "$ODOO_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy module to Odoo server
+        run: |
+          rsync -az --delete \
+            --exclude '__pycache__/' \
+            --exclude '*.pyc' \
+            -e "ssh -i ~/.ssh/odoo_deploy_key -p $ODOO_PORT" \
+            credit_limit_control/ \
+            "$ODOO_USER@$ODOO_HOST:$ODOO_ADDONS_PATH/credit_limit_control/"
+
+      - name: Restart Odoo service
+        run: |
+          ssh -i ~/.ssh/odoo_deploy_key -p "$ODOO_PORT" "$ODOO_USER@$ODOO_HOST" \
+            "sudo systemctl restart $ODOO_SERVICE"
