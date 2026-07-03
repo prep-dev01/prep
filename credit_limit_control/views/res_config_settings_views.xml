@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_credit_limit_control" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.credit.limit.control</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_use_credit_limit']/.." position="replace"/>
+            <xpath expr="//block[@id='invoicing_settings']" position="after">
+                <block title="Credit Limit" id="credit_limit_settings">
+                    <setting id="sales_credit_limit_setting"
+                             company_dependent="1"
+                             help="Trigger alerts when creating Invoices and Sales Orders for Partners with a Total Receivable amount exceeding a limit.">
+                        <field name="account_use_credit_limit" readonly="custom_credit_limit"/>
+                        <div class="content-group mt-2" invisible="not account_use_credit_limit">
+                            <div class="row">
+                                <label for="account_default_credit_limit" class="col-lg-4 o_light_label"/>
+                                <field name="account_default_credit_limit"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting id="custom_credit_limit_setting"
+                             string="Custom Credit Limit"
+                             company_dependent="1"
+                             help="Enable custom credit limits instead of the standard sales credit limit.">
+                        <field name="custom_credit_limit" readonly="account_use_credit_limit"/>
+                        <div class="content-group mt-2" invisible="not custom_credit_limit">
+                            <field name="company_currency_id" invisible="1"/>
+                            <div class="row">
+                                <label for="company_default_credit_limit" class="col-lg-4 o_light_label"/>
+                                <field name="company_default_credit_limit"
+                                       widget="monetary"
+                                       options="{'currency_field': 'company_currency_id'}"
+                                       readonly="combine_credit_limits_across_companies"/>
+                            </div>
+                <field name="all_companies_use_custom_credit_limit" invisible="1"/>
+                <field name="all_companies_use_same_currency" invisible="1"/>
+                <div class="mt-2">
+                    <field name="combine_credit_limits_across_companies"
+                           class="oe_inline"
+                           widget="shared_credit_limit_boolean"
+                           readonly="not all_companies_use_custom_credit_limit or not all_companies_use_same_currency"/>
+                    <div class="text-muted">
+                        Available only when Custom Credit Limit is enabled and the base currency is the same for all companies.
+                    </div>
+                            </div>
+                            <div class="row mt-2" invisible="not combine_credit_limits_across_companies">
+                                <label for="shared_credit_limit_amount" class="col-lg-4 o_light_label"/>
+                                <field name="shared_credit_limit_amount"
+                                       widget="monetary"
+                                       options="{'currency_field': 'company_currency_id'}"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <div class="col-12 mt-3 border-start border-2 ps-3">
+                        <div class="row">
+                            <setting id="block_sales_order_on_credit_limit_setting"
+                                     string="Block Sales Orders on Credit Limit"
+                                     company_dependent="1"
+                                     help="Prevent saving or confirming sales orders when the customer exceeds the active credit limit. Leave unchecked to show the warning without blocking the sales order.">
+                                <field name="block_sales_order_on_credit_limit"/>
+                            </setting>
+                            <setting id="block_delivery_on_credit_limit_setting"
+                                     string="Block Deliveries on Credit Limit"
+                                     company_dependent="1"
+                                     help="Prevent validating deliveries when the customer exceeds the active credit limit. Leave unchecked to allow the delivery.">
+                                <field name="block_delivery_on_credit_limit"/>
+                            </setting>
+                            <setting id="block_invoice_on_credit_limit_setting"
+                                     string="Block Invoices on Credit Limit"
+                                     company_dependent="1"
+                                     help="Prevent saving or posting customer invoices when the customer exceeds the active credit limit. Leave unchecked to show the warning without blocking the invoice.">
+                                <field name="block_invoice_on_credit_limit"/>
+                            </setting>
+                        </div>
+                    </div>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

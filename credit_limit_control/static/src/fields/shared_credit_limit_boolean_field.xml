@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="credit_limit_control.SharedCreditLimitBooleanField">
+        <CheckBox id="props.id"
+                  value="state.value"
+                  className="'d-inline-block'"
+                  disabled="props.readonly"
+                  onChange.bind="onChange">
+            Use Shared Credit Limit Across Companies
+        </CheckBox>
+    </t>
+</templates>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_view_form_credit_limit_control" model="ir.ui.view">
+        <field name="name">stock.picking.form.credit.limit.control</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@invisible='not picking_warning_text']" position="after">
+                <div class="alert alert-warning" role="alert" invisible="partner_credit_warning == ''">
+                    <field name="partner_credit_warning"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

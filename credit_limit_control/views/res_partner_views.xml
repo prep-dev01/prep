@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_view_form_credit_limit_control" model="ir.ui.view">
+        <field name="name">res.partner.form.credit.limit.control</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='accounting']" position="after">
+                <page string="Credit Limits"
+                      name="custom_credit_limits"
+                      invisible="not show_custom_credit_limit or (not is_company and parent_id)"
+                      groups="account.group_account_invoice,account.group_account_readonly">
+                    <field name="show_custom_credit_limit" invisible="1"/>
+                    <field name="show_shared_credit_limit_companies" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="credit"/>
+                            <field name="days_sales_outstanding"/>
+                            <label for="use_custom_partner_credit_limit"/>
+                            <div class="o_row">
+                                <field name="use_custom_partner_credit_limit"/>
+                                <field name="custom_credit_limit_total"
+                                       class="oe_inline"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"
+                                       invisible="not use_custom_partner_credit_limit"/>
+                            </div>
+                            <field name="custom_credit_company_ids"
+                                   widget="many2many_tags"
+                                   options="{'no_create': True}"
+                                   invisible="not use_custom_partner_credit_limit or not show_shared_credit_limit_companies"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
