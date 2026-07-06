@@ -77,14 +77,14 @@ jobs:
           logfile = None
           EOF
 
-      - name: Run stock_report_mrp_action checks
+      - name: Run purchase_receipt_invoice_link checks
         run: |
           python odoo/odoo-bin -c odoo.conf \
             -d test_db \
-            -i stock_report_mrp_action \
+            -i purchase_receipt_invoice_link \
             --stop-after-init \
             --test-enable \
-            --test-tags /stock_report_mrp_action
+            --test-tags /purchase_receipt_invoice_link
 
   deploy:
     runs-on: self-hosted
@@ -100,16 +100,16 @@ jobs:
           rsync -az --delete \
             --exclude '__pycache__/' \
             --exclude '*.pyc' \
-            stock_report_mrp_action/ \
-            /home/pranjal/odoo/odoo-19-modules/stock_report_mrp_action/
+            purchase_receipt_invoice_link/ \
+            /home/pranjal/odoo/odoo-19-modules/purchase_receipt_invoice_link/
 
       - name: Upgrade module in CI/CD test database
         run: |
           cd /home/pranjal/odoo/odoo-19
           ./venv/bin/python odoo-bin -c config/odoo.conf \
             -d ci_cd_test \
-            -i stock_report_mrp_action \
-            -u stock_report_mrp_action \
+            -i purchase_receipt_invoice_link \
+            -u purchase_receipt_invoice_link \
             --stop-after-init \
             --without-demo=all
 

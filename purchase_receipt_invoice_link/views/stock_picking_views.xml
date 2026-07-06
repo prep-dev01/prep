@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_purchase_receipt_invoice_link" model="ir.ui.view">
+        <field name="name">stock.picking.form.purchase.receipt.invoice.link</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <widget
+                    name="purchase_receipt_bill_uploader"
+                    invisible="picking_type_code != 'incoming' or not purchase_id or state == 'cancel'"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="action_view_purchase_receipt_bills"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-file-text-o"
+                    invisible="picking_type_code != 'incoming' or purchase_receipt_bill_count == 0">
+                    <field name="purchase_receipt_bill_count" widget="statinfo" string="Vendor Bills"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
