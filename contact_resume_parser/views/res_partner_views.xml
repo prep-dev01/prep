@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_form_resume_parser" model="ir.ui.view">
+        <field name="name">res.partner.form.resume.parser</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_candidate"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Resume" name="resume_parser" class="o_resume_parser_page">
+                    <group>
+                        <group>
+                            <field name="resume_file" filename="resume_filename"/>
+                            <div class="text-muted">
+                                Supported: PDF, DOC, DOCX, ODT, RTF, JPG, PNG, WEBP, TIFF and scanned PDF/image resumes.
+                            </div>
+                            <field name="resume_filename" invisible="1"/>
+                            <field name="resume_overwrite_existing"/>
+                            <button
+                                name="action_extract_resume"
+                                string="Re-Extract Resume"
+                                type="object"
+                                class="btn-primary"
+                                invisible="not resume_file"
+                            />
+                        </group>
+                        <group>
+                            <field name="resume_extraction_state"/>
+                            <field name="resume_extraction_message" nolabel="1"/>
+                        </group>
+                    </group>
+                    <group string="Candidate Details" col="2">
+                        <field name="resume_candidate_name" readonly="1"/>
+                        <field name="resume_job_title" readonly="1"/>
+                        <field name="resume_email" readonly="1"/>
+                        <field name="resume_phone" readonly="1"/>
+                        <field name="resume_address" readonly="1"/>
+                        <field name="website" string="Website" widget="url" readonly="1"/>
+                        <field name="resume_linkedin" widget="url" readonly="1"/>
+                        <field name="resume_social_media" readonly="1"/>
+                    </group>
+                    <group string="Extracted Resume Details" col="2">
+                        <group>
+                            <field name="resume_summary" placeholder="Extracted profile summary..." readonly="1"/>
+                            <field name="resume_certifications" placeholder="Extracted certifications..." readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="resume_skills" placeholder="Extracted general skills..." readonly="1"/>
+                            <field name="resume_hard_skills" placeholder="Extracted hard skills..." readonly="1"/>
+                            <field name="resume_soft_skills" placeholder="Extracted soft skills..." readonly="1"/>
+                            <field name="resume_languages" placeholder="Extracted languages..." readonly="1"/>
+                            <field name="resume_hobbies" placeholder="Extracted hobbies/interests..." readonly="1"/>
+                        </group>
+                    </group>
+                    <separator string="Education"/>
+                    <field name="resume_education_line_ids" nolabel="1" readonly="1" class="o_resume_full_width_table">
+                        <list>
+                            <field name="date_range" width="140px"/>
+                            <field name="degree" width="260px"/>
+                            <field name="institution" width="260px"/>
+                            <field name="location" width="180px"/>
+                            <field name="description" width="320px"/>
+                        </list>
+                    </field>
+                    <separator string="Experience"/>
+                    <field name="resume_experience_line_ids" nolabel="1" readonly="1" class="o_resume_full_width_table">
+                        <list>
+                            <field name="date_range" width="160px"/>
+                            <field name="job_title" optional="show" width="240px"/>
+                            <field name="company" width="220px"/>
+                            <field name="location" width="160px"/>
+                            <field name="description" width="520px"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

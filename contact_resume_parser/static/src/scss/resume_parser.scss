@@ -1,0 +1,22 @@
+.o_form_view .o_resume_parser_page {
+    .o_resume_full_width_table,
+    .o_resume_full_width_table .o_field_x2many,
+    .o_resume_full_width_table .o_list_renderer,
+    .o_resume_full_width_table .o_list_table {
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .o_resume_full_width_table {
+        display: block;
+        grid-column: 1 / -1;
+    }
+
+    .o_resume_full_width_table .o_list_table {
+        table-layout: fixed;
+    }
+
+    .o_resume_full_width_table .o_data_cell {
+        white-space: normal;
+    }
+}

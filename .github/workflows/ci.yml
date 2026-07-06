@@ -77,14 +77,14 @@ jobs:
           logfile = None
           EOF
 
-      - name: Run purchase_receipt_invoice_link checks
+      - name: Run contact_resume_parser checks
         run: |
           python odoo/odoo-bin -c odoo.conf \
             -d test_db \
-            -i purchase_receipt_invoice_link \
+            -i contact_resume_parser \
             --stop-after-init \
             --test-enable \
-            --test-tags /purchase_receipt_invoice_link
+            --test-tags /contact_resume_parser
 
   deploy:
     runs-on: self-hosted
@@ -100,16 +100,16 @@ jobs:
           rsync -az --delete \
             --exclude '__pycache__/' \
             --exclude '*.pyc' \
-            purchase_receipt_invoice_link/ \
-            /home/pranjal/odoo/odoo-19-modules/purchase_receipt_invoice_link/
+            contact_resume_parser/ \
+            /home/pranjal/odoo/odoo-19-modules/contact_resume_parser/
 
       - name: Upgrade module in CI/CD test database
         run: |
           cd /home/pranjal/odoo/odoo-19
           ./venv/bin/python odoo-bin -c config/odoo.conf \
             -d ci_cd_test \
-            -i purchase_receipt_invoice_link \
-            -u purchase_receipt_invoice_link \
+            -i contact_resume_parser \
+            -u contact_resume_parser \
             --stop-after-init \
             --without-demo=all
 

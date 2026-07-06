@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_resume_parser" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.resume.parser</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Resume Parser" name="contact_resume_parser" groups="base.group_system">
+                    <block title="AI Resume Extraction" name="resume_parser_ai">
+                        <setting string="AI Provider" help="Ollama runs locally and is free. Install from ollama.com and run: ollama pull llama3.2">
+                            <field name="resume_parser_ai_provider"/>
+                        </setting>
+                        <setting string="HuggingFace NER" invisible="resume_parser_ai_provider not in ('auto', 'huggingface')" help="Train with scripts/train_resume_ner.py after annotating resumes in Label Studio.">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="resume_parser_huggingface_model" class="col-lg-3 o_light_label"/>
+                                    <field name="resume_parser_huggingface_model" placeholder="yourname/resume-ner-odoo"/>
+                                </div>
+                            </div>
+                        </setting>
+                        <setting string="Ollama" invisible="resume_parser_ai_provider not in ('auto', 'ollama')">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="resume_parser_ollama_url" class="col-lg-3 o_light_label"/>
+                                    <field name="resume_parser_ollama_url" placeholder="http://127.0.0.1:11434"/>
+                                </div>
+                                <div class="row">
+                                    <label for="resume_parser_ollama_model" class="col-lg-3 o_light_label"/>
+                                    <field name="resume_parser_ollama_model" placeholder="llama3.2 (auto-detect if empty)"/>
+                                </div>
+                            </div>
+                        </setting>
+                        <setting string="OpenAI" invisible="resume_parser_ai_provider not in ('auto', 'openai')">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="resume_parser_openai_api_key" class="col-lg-3 o_light_label"/>
+                                    <field name="resume_parser_openai_api_key" password="True"/>
+                                </div>
+                                <div class="row">
+                                    <label for="resume_parser_openai_model" class="col-lg-3 o_light_label"/>
+                                    <field name="resume_parser_openai_model" placeholder="gpt-4o-mini"/>
+                                </div>
+                            </div>
+                        </setting>
+                        <setting string="Upload speed" help="Disable to upload resumes instantly; click Extract Resume when you are ready to parse.">
+                            <field name="resume_parser_extract_on_upload"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

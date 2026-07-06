@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_applicant_form_resume_parser" model="ir.ui.view">
+        <field name="name">hr.applicant.form.resume.parser</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-info" role="alert" invisible="resume_file">
+                    Upload a resume (PDF, Word, or image) — applicant fields will autofill automatically.
+                </div>
+            </xpath>
+            <xpath expr="//group[field[@name='email_from']]/.." position="before">
+                <group string="Resume Upload">
+                    <group>
+                        <field name="resume_file" filename="resume_filename"/>
+                        <field name="resume_filename" invisible="1"/>
+                        <field name="resume_overwrite_existing"/>
+                        <button
+                            name="action_extract_resume"
+                            string="Extract Resume"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not resume_file"
+                        />
+                    </group>
+                    <group>
+                        <field name="resume_extraction_state"/>
+                        <field name="resume_extraction_message" nolabel="1"/>
+                        <field name="resume_parsed_skills" invisible="not resume_parsed_skills"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
