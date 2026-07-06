@@ -77,14 +77,14 @@ jobs:
           logfile = None
           EOF
 
-      - name: Run credit_limit_control checks
+      - name: Run stock_report_mrp_action checks
         run: |
           python odoo/odoo-bin -c odoo.conf \
             -d test_db \
-            -i credit_limit_control \
+            -i stock_report_mrp_action \
             --stop-after-init \
             --test-enable \
-            --test-tags /credit_limit_control
+            --test-tags /stock_report_mrp_action
 
   deploy:
     runs-on: self-hosted
@@ -100,16 +100,16 @@ jobs:
           rsync -az --delete \
             --exclude '__pycache__/' \
             --exclude '*.pyc' \
-            credit_limit_control/ \
-            /home/pranjal/odoo/odoo-19-modules/credit_limit_control/
+            stock_report_mrp_action/ \
+            /home/pranjal/odoo/odoo-19-modules/stock_report_mrp_action/
 
       - name: Upgrade module in CI/CD test database
         run: |
           cd /home/pranjal/odoo/odoo-19
           ./venv/bin/python odoo-bin -c config/odoo.conf \
             -d ci_cd_test \
-            -i credit_limit_control \
-            -u credit_limit_control \
+            -i stock_report_mrp_action \
+            -u stock_report_mrp_action \
             --stop-after-init \
             --without-demo=all
 

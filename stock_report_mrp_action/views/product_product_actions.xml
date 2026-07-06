@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_create_manufacturing_order" model="ir.actions.server">
+        <field name="name">Create Manufacturing Order</field>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="binding_model_id" ref="product.model_product_product"/>
+        <field name="binding_view_types">list</field>
+        <field name="group_ids" eval="[(4, ref('mrp.group_mrp_user'))]"/>
+        <field name="state">code</field>
+        <field name="code">
+if len(records) != 1:
+    raise UserError(env._("Please select exactly one product to create a manufacturing order."))
+action = {
+    "name": env._("Manufacturing Order"),
+    "type": "ir.actions.act_window",
+    "res_model": "mrp.production",
+    "views": [(env.ref("mrp.mrp_production_form_view").id, "form")],
+    "view_mode": "form",
+    "target": "current",
+    "context": {
+        "default_move_raw_ids": [(0, 0, {
+            "product_id": records.id,
+            "product_uom": records.uom_id.id,
+            "product_uom_qty": 1.0,
+        })],
+    },
+}
+        </field>
+    </record>
+</odoo>
