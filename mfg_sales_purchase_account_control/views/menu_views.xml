@@ -1,0 +1,5 @@
+<odoo>
+    <menuitem id="menu_mfg_sales_purchase_account_root"
+              name="Operations Control"
+              sequence="50"/>
+</odoo>

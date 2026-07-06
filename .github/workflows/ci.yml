@@ -77,14 +77,14 @@ jobs:
           logfile = None
           EOF
 
-      - name: Run contact_resume_parser checks
+      - name: Run mfg_sales_purchase_account_control checks
         run: |
           python odoo/odoo-bin -c odoo.conf \
             -d test_db \
-            -i contact_resume_parser \
+            -i mfg_sales_purchase_account_control \
             --stop-after-init \
             --test-enable \
-            --test-tags /contact_resume_parser
+            --test-tags /mfg_sales_purchase_account_control
 
   deploy:
     runs-on: self-hosted
@@ -100,16 +100,16 @@ jobs:
           rsync -az --delete \
             --exclude '__pycache__/' \
             --exclude '*.pyc' \
-            contact_resume_parser/ \
-            /home/pranjal/odoo/odoo-19-modules/contact_resume_parser/
+            mfg_sales_purchase_account_control/ \
+            /home/pranjal/odoo/odoo-19-modules/mfg_sales_purchase_account_control/
 
       - name: Upgrade module in CI/CD test database
         run: |
           cd /home/pranjal/odoo/odoo-19
           ./venv/bin/python odoo-bin -c config/odoo.conf \
             -d ci_cd_test \
-            -i contact_resume_parser \
-            -u contact_resume_parser \
+            -i mfg_sales_purchase_account_control \
+            -u mfg_sales_purchase_account_control \
             --stop-after-init \
             --without-demo=all
 

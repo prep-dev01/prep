@@ -1,0 +1,18 @@
+<odoo>
+    <record id="view_order_form_mfg_sales_purchase_account_control" model="ir.ui.view">
+        <field name="name">sale.order.form.mfg.sales.purchase.account.control</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="before">
+                <group string="Operations Control">
+                    <field name="project_required"/>
+                    <field name="manufacturing_required"/>
+                    <field name="auto_purchase_required"/>
+                    <field name="expected_delivery_date"/>
+                    <field name="profitability_margin"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

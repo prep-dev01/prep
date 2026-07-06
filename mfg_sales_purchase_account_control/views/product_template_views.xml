@@ -1,0 +1,15 @@
+<odoo>
+    <record id="product_template_form_mfg_sales_purchase_account_control" model="ir.ui.view">
+        <field name="name">product.template.form.mfg.sales.purchase.account.control</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="before">
+                <group string="Automation Control">
+                    <field name="auto_manufacture_from_sale"/>
+                    <field name="auto_purchase_missing_components"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
